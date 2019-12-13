@@ -60,26 +60,6 @@ app.post("/api/notes", function (req, res) {
     });
 });
 
-<<<<<<< HEAD:server.js
-//Delete api target an object by the object's id in the db json file after a user deletes a note.
-app.delete("/api/notes/:id", function deleteNote(req, res) {
-    var noteId = req.body.id;
-  
-    fs.readFile("./db/db.json", "utf8", function getNoteId(err, d) {
-      console.log("this is the array", d);
-      noteArray = JSON.parse(d);
-  
-      for (var i = 0; i < noteArray.length; i++) {
-        console.log(noteArray[i]);
-        if (noteArray[i].id === noteId) {
-          noteArray.splice(i, 1);
-  
-          fs.writeFile("./db/db.json", JSON.stringify(noteArray), "utf8", err => {
-            if (err) throw err;
-          });
-        }
-      }
-=======
 // (deletes the targeted note when the trashcan icon is clicked)
 // Delete api target an object by the object's id in the db json file after a user deletes a note.
 app.delete("/api/notes/:id", function deleteNote(req, res) {
@@ -97,7 +77,6 @@ app.delete("/api/notes/:id", function deleteNote(req, res) {
                 });
             }
         }
->>>>>>> bab0a3c5df0978a2fe05556b46de4f4211bcbea5:Develop/server.js
     });
 });
 
