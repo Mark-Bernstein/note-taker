@@ -38,6 +38,7 @@ app.get("/api/notes", function (req, res) {
         return res.json(JSON.parse(data));
     });
 });
+
 // recieve a new note to save on the request body, add it to the db.json file...  
 // and then return the new note to the client.
 app.post("/api/notes", function (req, res) {
@@ -59,6 +60,7 @@ app.post("/api/notes", function (req, res) {
     });
 });
 
+<<<<<<< HEAD:server.js
 //Delete api target an object by the object's id in the db json file after a user deletes a note.
 app.delete("/api/notes/:id", function deleteNote(req, res) {
     var noteId = req.body.id;
@@ -77,15 +79,34 @@ app.delete("/api/notes/:id", function deleteNote(req, res) {
           });
         }
       }
+=======
+// (deletes the targeted note when the trashcan icon is clicked)
+// Delete api target an object by the object's id in the db json file after a user deletes a note.
+app.delete("/api/notes/:id", function deleteNote(req, res) {
+    var noteId = req.body.id;
+
+    fs.readFile("./db/db.json", "utf8", function getNoteId(err, data) {
+        noteArray = JSON.parse(data);
+
+        for (var i = 0; i < noteArray.length; i++) {
+            if (noteArray[i].id === noteId) {
+                noteArray.splice(i, 1);
+
+                fs.writeFile("./db/db.json", JSON.stringify(noteArray), "utf8", err => {
+                    if (err) throw err;
+                });
+            }
+        }
+>>>>>>> bab0a3c5df0978a2fe05556b46de4f4211bcbea5:Develop/server.js
     });
-  });
+});
 
 // Starts the server to begin listening
-// =============================================================
+// ==============================================
 app.listen(PORT, function () {
     console.log("App listening on PORT " + PORT);
 });
 
-var data = fs.readFileSync('./db/db.json');
-var words = JSON.parse(data);
-console.log(words);
+// var data = fs.readFileSync('./db/db.json');
+// var words = JSON.parse(data);
+// console.log(words);
