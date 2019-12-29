@@ -32,60 +32,50 @@ app.get("/notes", function (req, res) {
     res.sendFile(path.join(__dirname, "./public/notes.html"));
 });
 
-// Read the db.json file and return all saved notes as JSON.
 app.get("/api/notes", function (req, res) {
-    fs.readFile("./db/db.json", "utf8", function noteCallBack(err, data) {
-        return res.json(JSON.parse(data));
-    });
-});
+    var db = fs.readFileSync("./db/db.json", "utf8");
+    return res.json(JSON.parse(db));
+})
+
+//create the array to save all notes
+var notesArray = [];
 
 // recieve a new note to save on the request body, add it to the db.json file...  
 // and then return the new note to the client.
 app.post("/api/notes", function (req, res) {
-    var notes = req.body;
-    let noteText = { title: "Test Title2", text: "Test text2" };
-    noteText.title = notes.title;
-    noteText.text = notes.text;
-    noteText.id = ID();
+    var newNote = req.body;
+    newNote.id = ID();
 
-    var data = fs.readFileSync("./db/db.json");
-    var noteObject = JSON.parse(data);
-    console.log(noteObject);
+    var data = fs.readFileSync("./db/db.json", "utf8");
+    notesArray = JSON.parse(data);
 
-    noteObject.push(noteText);
-    noteJSON = JSON.stringify(noteObject);
+    notesArray.push(newNote);
+    var noteJSON = JSON.stringify(notesArray);
 
     fs.writeFile("./db/db.json", noteJSON, "utf8", err => {
         if (err) throw err;
     });
 });
 
-// (deletes the targeted note when the trashcan icon is clicked)
-// Delete api target an object by the object's id in the db json file after a user deletes a note.
-app.delete("/api/notes/:id", function deleteNote(req, res) {
-    var noteId = req.body.id;
+// When thetrashcan icon is clicked...
+// Deletes the targeted note by the object's id in the db json file after a user deletes a note.
+app.delete("/api/notes/:id", function (req, res) {
+    var deleteNote = req.params.id;
 
-    fs.readFile("./db/db.json", "utf8", function getNoteId(err, data) {
-        noteArray = JSON.parse(data);
-
-        for (var i = 0; i < noteArray.length; i++) {
-            if (noteArray[i].id === noteId) {
-                noteArray.splice(i, 1);
-
-                fs.writeFile("./db/db.json", JSON.stringify(noteArray), "utf8", err => {
-                    if (err) throw err;
-                });
-            }
-        }
+    notesArray = notesArray.filter(function (note) {
+        return note.id != deleteNote;
     });
-});
+    console.log(notesArray);
+    var deletedNotes = JSON.stringify(notesArray);
+
+    fs.writeFileSync("./db/db.json", deletedNotes, "utf8", err => {
+        if (err) throw err;
+    });
+
+})
 
 // Starts the server to begin listening
 // ==============================================
 app.listen(PORT, function () {
     console.log("App listening on PORT " + PORT);
 });
-
-var data = fs.readFileSync('./db/db.json');
-var words = JSON.parse(data);
-console.log(words);
