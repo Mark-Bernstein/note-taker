@@ -44,6 +44,6 @@ Application should allow users to delete previously saved notes.
 
 **Screenshots**
 
-![Homepage Screenshot](/noteTakerScreenshot.JPG.jpg)
+![Homepage Screenshot](noteTakerScreenshot.JPG)
 
 
