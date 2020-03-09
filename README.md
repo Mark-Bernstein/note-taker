@@ -41,3 +41,9 @@ Application should allow users to view previously saved notes.
 Application should allow users to delete previously saved notes.
 
 - - -
+
+**Screenshots**
+
+![Homepage Screenshot](noteTakerScreenshot.JPG.jpg)
+
+
